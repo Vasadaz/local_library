@@ -4,6 +4,13 @@ from pathlib import Path
 import requests
 
 
+def check_for_redirect(response):
+    http_code = {200: 'OK'}
+
+    if response.status_code not in http_code:
+        raise requests.HTTPError(response.url, response)
+
+
 def download_file(dir_name: str, file_url: str, params: dict = None) -> str:
     Path(dir_name).mkdir(parents=True, exist_ok=True)
 
