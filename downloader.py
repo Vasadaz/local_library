@@ -22,7 +22,7 @@ def download_file(file_url: str, dir_name: str):
 def get_file_full_name(url: str) -> str:
     url_blocks = urllib.parse.urlsplit(url)
     file_type = url_blocks.path[1:4]
-    file_name = url_blocks.query[4:]
+    file_name = url_blocks.query[3:]
     full_file_name = f'{file_name}.{file_type}'
 
     return full_file_name
