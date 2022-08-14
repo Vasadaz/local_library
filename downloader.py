@@ -14,17 +14,16 @@ def check_for_redirect(response):
 def download_file(dir_name: str, file_url: str, params: dict = None) -> str:
     Path(dir_name).mkdir(parents=True, exist_ok=True)
 
-    response = requests.get(file_url, params=params)
+    response = requests.get(file_url, params=params, allow_redirects=False)
     response.raise_for_status()
+
+    check_for_redirect(response)
 
     file_name = get_file_full_name(response.url)
     file_save_path = f'{dir_name}/{file_name}'
 
-    try:
-        with open(file_save_path, 'wb+') as file:
-            file.write(response.content)
-    except PermissionError:  # Если такой книги нет
-        return (f'Book {params["id"]} Not Found')
+    with open(file_save_path, 'wb+') as file:
+        file.write(response.content)
 
     return file_save_path
 
