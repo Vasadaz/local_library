@@ -3,6 +3,8 @@ from pathlib import Path
 
 import requests
 
+from bs4 import BeautifulSoup
+
 
 def check_for_redirect(response):
     http_code = {200: 'OK'}
@@ -35,3 +37,29 @@ def get_file_full_name(url: str) -> str:
     full_file_name = f'{file_name}.{file_type}'
 
     return full_file_name
+
+
+def parser_book_notes(url: str) -> dict:
+    response = requests.get(url)
+    response.raise_for_status()
+
+    check_for_redirect(response)
+
+    soup = BeautifulSoup(response.text, 'lxml')
+
+    content = soup.find(id='content')
+    title_tag = content.find('h1')
+    title_text = title_tag.text.split('::')
+    book_image_tag = content.find(class_='bookimage').find('img')
+
+    author = title_text[1].strip()
+    book_name = title_text[0].strip()
+    book_image_src = book_image_tag['src']
+
+    book_notes = {
+        'author': author,
+        'book': book_name,
+        'image': book_image_src
+    }
+
+    return book_notes
