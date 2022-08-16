@@ -49,16 +49,19 @@ def parser_book_notes(url: str, book_id: int = None) -> dict:
     title_text = title_tag.text.split('::')
     book_image_tag = content.find(class_='bookimage').find('img')
     comment_tags = content.find_all('span', class_='black')
+    genre_tags = content.find('span', class_='d_book').find_all('a')
 
     author = title_text[1].strip()
     book_name = title_text[0].strip()
     book_image_src = urljoin(url, book_image_tag['src'])
     comments = [comment.text for comment in comment_tags]
+    genres = [genre.text for genre in genre_tags]
 
     book_notes = {
         'author': author,
         'book': sanitize_filename(f'{book_id}. {book_name}'),
         'comments': comments,
+        'genres': genres,
         'image_url': book_image_src,
     }
 
