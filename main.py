@@ -16,6 +16,6 @@ if __name__ == '__main__':
         try:
             book_resources = downloader.download_txt_file(LIBRARY_PATH_DIR, LIBRARY_URL, params)
         except requests.exceptions.HTTPError:
-            print(f'Book №{book_id} Not Found')
+            print(f'Book №{book_id} Not Found\n')
             continue
-        print(f'Save book №{book_id} to {book_resources}')
+        print(f'Save book №{book_id} to {book_resources}\n')

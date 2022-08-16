@@ -1,9 +1,11 @@
+import os.path
 from pathlib import Path
 from urllib.parse import urljoin
 
 import requests
 
 from bs4 import BeautifulSoup
+from pathvalidate import sanitize_filename
 
 
 def check_for_redirect(response):
@@ -26,7 +28,7 @@ def download_txt_file(dir_name: str, url: str, params: dict = None) -> list:
 
     library_notes = parser_book_notes(url, params['id'])
     file_save_name = f'{library_notes["book"]}.{type_file}'
-    file_save_path = f'{dir_name}/{file_save_name}'
+    file_save_path = os.path.join(dir_name, file_save_name)
 
     with open(file_save_path, 'wb+') as file:
         file.write(response.content)
@@ -54,7 +56,7 @@ def parser_book_notes(url: str, book_id: int = None) -> dict:
 
     book_notes = {
         'author': author,
-        'book': book_name,
+        'book': sanitize_filename(book_name),
         'image': book_image_src
     }
 
