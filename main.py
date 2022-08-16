@@ -3,6 +3,7 @@ import requests
 import downloader
 
 
+IMAGE_DIR_NAME = 'covers'
 LIBRARY_PATH_DIR = 'books'
 LIBRARY_URL = 'https://tululu.org/'
 
@@ -15,7 +16,11 @@ if __name__ == '__main__':
 
         try:
             book_resources = downloader.download_txt_file(LIBRARY_PATH_DIR, LIBRARY_URL, params)
+            image_url = book_resources['image_url']
+            book_resources['image_path'] = downloader.download_img(IMAGE_DIR_NAME, image_url)
         except requests.exceptions.HTTPError:
             print(f'Book №{book_id} Not Found\n')
             continue
-        print(f'Save book №{book_id} to {book_resources}\n')
+        for note in book_resources.items():
+            print(note)
+        print()
