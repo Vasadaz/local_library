@@ -56,7 +56,7 @@ def parser_book_notes(url: str, book_id: int = None) -> dict:
 
     book_notes = {
         'author': author,
-        'book': sanitize_filename(f'{book_id} {book_name}'),
+        'book': sanitize_filename(f'{book_id}. {book_name}'),
         'image': book_image_src
     }
 
