@@ -1,6 +1,6 @@
 import os.path
 from pathlib import Path
-from urllib.parse import urljoin,  unquote, urlsplit
+from urllib.parse import urljoin, unquote, urlsplit
 import requests
 
 from bs4 import BeautifulSoup
@@ -48,15 +48,18 @@ def parser_book_notes(url: str, book_id: int = None) -> dict:
     title_tag = content.find('h1')
     title_text = title_tag.text.split('::')
     book_image_tag = content.find(class_='bookimage').find('img')
+    comment_tags = content.find_all('span', class_='black')
 
     author = title_text[1].strip()
     book_name = title_text[0].strip()
     book_image_src = urljoin(url, book_image_tag['src'])
+    comments = [comment.text for comment in comment_tags]
 
     book_notes = {
         'author': author,
         'book': sanitize_filename(f'{book_id}. {book_name}'),
-        'image_url': book_image_src
+        'comments': comments,
+        'image_url': book_image_src,
     }
 
     return book_notes
