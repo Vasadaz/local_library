@@ -11,14 +11,14 @@
 Книги сохраняются в директорию `./books` , а обложки к ним в `./covers`. 
 
 #### Аргументы:
-```shell
+```
 -h, --help            
  Вывод информации о скрипте
  
--s , --start_id 
+-s START_ID, --start_id START_ID
  Начало диапазона id, по-умолчанию 1
  
--e , --end_id 
+-e END_ID, --end_id END_ID
  Конец диапазона id, по-умолчанию 10
  ```
 
@@ -28,7 +28,7 @@ python main.py -s 6 -e 7
 ```
 
 #### Пример ответа скрипта `main.py`:
-```shell
+```
 Book №6:
 author - Зимен Сержио
 book - 6. Бархатная революция в рекламе
@@ -48,9 +48,14 @@ Book №7 Not Found https://tululu.org/txt.php?id=7
 
 Python3 должен быть уже установлен. 
 
-Для установки зависимостей используйте `pip install -r requirements.txt`
-или `pip3 install -r requirements.txt`, если есть конфликт с Python2.
-
+Для установки зависимостей используйте:
+```shell
+pip install -r requirements.txt
+```
+Если есть конфликт с Python2 используйте:
+```shell
+pip3 install -r requirements.txt
+```
 
 ### Цель проекта
 
