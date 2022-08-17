@@ -45,10 +45,11 @@ if __name__ == '__main__':
             cover_url = book_resources['cover_url']
             book_resources['book_path'] = downloader.download_txt(book_url, LIBRARY_DIR_NAME, book_name)
             book_resources['cover_path'] = downloader.download_img(cover_url, IMAGE_DIR_NAME)
-        except requests.exceptions.HTTPError:
-            print(f'Book №{book_id} Not Found\n')
+        except requests.exceptions.HTTPError as err:
+            print(f'Book №{book_id} Not Found {err.args[0]}\n')
             continue
 
+        print(f'Book №{book_id}:')
         for note in book_resources.items():
-            print(note)
+            print(f'{note[0]} - {note[1]}')
         print()
