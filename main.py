@@ -13,16 +13,20 @@ def parse_arg() -> argparse.Namespace:
         description='Скрипт скачивает книги по их id с онлайн-библиотеки https://tululu.org  '
                     '\nКниги сохраняются в директории ./books , а обложки к ним в ./covers '
     )
-    parser.add_argument('-s',
-                        '--start_id',
-                        help='Начало диапазона id, по-умолчанию 1',
-                        default=1,
-                        type=int)
-    parser.add_argument('-e',
-                        '--end_id',
-                        help='Конец диапазона id, по-умолчанию 10',
-                        default=10,
-                        type=int)
+    parser.add_argument(
+        '-s',
+        '--start_id',
+        help='Начало диапазона id, по-умолчанию 1',
+        default=1,
+        type=int
+    )
+    parser.add_argument(
+        '-e',
+        '--end_id',
+        help='Конец диапазона id, по-умолчанию 10',
+        default=10,
+        type=int
+    )
     parsed_args = parser.parse_args()
 
     return parsed_args
