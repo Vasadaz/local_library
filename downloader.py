@@ -9,9 +9,9 @@ from pathvalidate import sanitize_filename
 
 
 def check_for_redirect(response):
-    http_code = {200: 'OK'}
+    http_codes = {200: 'OK'}
 
-    if response.status_code not in http_code:
+    if response.status_code not in http_codes:
         raise requests.HTTPError(response.url, response)
 
 
