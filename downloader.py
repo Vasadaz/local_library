@@ -1,6 +1,6 @@
 import os.path
 from pathlib import Path
-from urllib.parse import urljoin, unquote, urlsplit
+from urllib.parse import unquote, urlsplit
 
 import requests
 
@@ -15,10 +15,10 @@ def check_for_redirect(response):
         raise requests.HTTPError(response.url, response)
 
 
-def download_txt(url: str, dir_name: str, book_name: str) -> str:
+def download_txt(url: str, dir_name: str, book_name: str, params: dict = None) -> str:
     Path(dir_name).mkdir(parents=True, exist_ok=True)
 
-    response = requests.get(url, allow_redirects=False)
+    response = requests.get(url, params=params, allow_redirects=False)
     response.raise_for_status()
     check_for_redirect(response)
 
@@ -32,12 +32,8 @@ def download_txt(url: str, dir_name: str, book_name: str) -> str:
     return book_save_path
 
 
-def parse_book_page(url: str, book_id: int = None) -> dict:
-    book_page_url = urljoin(url, f'b{book_id}/')
-    book_download_txt_url = urljoin(url, f'txt.php?id={book_id}')
+def parse_book_page(response, book_id: int = None) -> dict:
 
-    response = requests.get(book_page_url, allow_redirects=False)
-    response.raise_for_status()
     check_for_redirect(response)
 
     soup = BeautifulSoup(response.text, 'lxml')
@@ -50,7 +46,7 @@ def parse_book_page(url: str, book_id: int = None) -> dict:
 
     author = title_text[1].strip()
     book_name = title_text[0].strip()
-    cover_url = urljoin(url, cover_tag['src'])
+    cover_url = cover_tag['src']
     comments = [comment.text for comment in comment_tags]
     genres = [genre.text for genre in genre_tags]
 
@@ -60,8 +56,6 @@ def parse_book_page(url: str, book_id: int = None) -> dict:
         'genres': genres,
         'comments': comments,
         'cover_url': cover_url,
-        'page_url': book_page_url,
-        'txt_url': book_download_txt_url,
     }
 
     return page_resources

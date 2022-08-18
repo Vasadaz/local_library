@@ -1,6 +1,8 @@
 import argparse
 import requests
 
+from urllib.parse import urljoin
+
 import downloader
 
 IMAGE_DIR_NAME = 'covers'
@@ -38,12 +40,24 @@ if __name__ == '__main__':
     end_id = args.end_id + 1
 
     for book_id in range(start_id, end_id):
+        book_download_txt_url = urljoin(LIBRARY_URL, f'txt.php')
+        book_download_txt_url_params = {'id': book_id}
+        book_page_url = urljoin(LIBRARY_URL, f'b{book_id}/')
+
+        response = requests.get(book_page_url, allow_redirects=False)
+        response.raise_for_status()
+
         try:
-            book_resources = downloader.parse_book_page(LIBRARY_URL, book_id)
+            book_resources = downloader.parse_book_page(response, book_id)
             book_name = book_resources['book']
-            book_url = book_resources['txt_url']
-            cover_url = book_resources['cover_url']
-            book_resources['book_path'] = downloader.download_txt(book_url, LIBRARY_DIR_NAME, book_name)
+            cover_url = urljoin(LIBRARY_URL, book_resources['cover_url'])
+            del book_resources['cover_url']
+            book_resources['book_path'] = downloader.download_txt(
+                book_download_txt_url,
+                LIBRARY_DIR_NAME,
+                book_name,
+                book_download_txt_url_params
+            )
             book_resources['cover_path'] = downloader.download_img(cover_url, IMAGE_DIR_NAME)
         except requests.exceptions.HTTPError as err:
             print(f'Book №{book_id} Not Found {err.args[0]}\n')
