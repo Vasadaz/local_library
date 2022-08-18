@@ -44,7 +44,7 @@ def parse_book_page(response, book_id: int = None) -> dict:
     comment_tags = content.find_all('span', class_='black')
     genre_tags = content.find('span', class_='d_book').find_all('a')
 
-    author, book_name = title_texts
+    book_name, author = title_texts
     cover_url = cover_tag['src']
     comments = [comment.text for comment in comment_tags]
     genres = [genre.text for genre in genre_tags]
