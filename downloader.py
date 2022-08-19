@@ -1,6 +1,6 @@
 import os.path
 from pathlib import Path
-from urllib.parse import unquote, urlsplit
+from urllib.parse import urljoin, unquote, urlsplit
 
 import requests
 
@@ -40,7 +40,7 @@ def parse_library_notes(response, book_id: int = None) -> dict:
     genre_tags = content.find('span', class_='d_book').find_all('a')
 
     book_name, author = title_texts
-    cover_url = cover_tag['src']
+    cover_url = urljoin(response.url, cover_tag['src'])
     comments = [comment.text for comment in comment_tags]
     genres = [genre.text for genre in genre_tags]
 

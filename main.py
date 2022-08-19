@@ -23,15 +23,17 @@ def get_library_notes(book_id: int) -> dict:
 
     library_notes = downloader.parse_library_notes(response, book_id)
     book_name = library_notes['book']
-    cover_url = urljoin(LIBRARY_URL, library_notes['cover_url'])
-    del library_notes['cover_url']
     library_notes['book_path'] = downloader.download_txt(
         book_download_txt_url,
         LIBRARY_DIR_NAME,
         book_name,
         book_download_txt_url_params
     )
-    library_notes['cover_path'] = downloader.download_img(cover_url, IMAGE_DIR_NAME)
+    library_notes['cover_path'] = downloader.download_img(
+        library_notes['cover_url'],
+        IMAGE_DIR_NAME
+    )
+    del library_notes['cover_url']
 
     return library_notes
 
