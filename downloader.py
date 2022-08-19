@@ -9,16 +9,14 @@ from pathvalidate import sanitize_filename
 
 
 def check_for_redirect(response):
-    http_codes = {200: 'OK'}
-
-    if response.status_code not in http_codes:
+    if response.history:
         raise requests.HTTPError(response.url, response)
 
 
 def download_txt(url: str, dir_name: str, book_name: str, params: dict = None) -> str:
     Path(dir_name).mkdir(parents=True, exist_ok=True)
 
-    response = requests.get(url, params=params, allow_redirects=False)
+    response = requests.get(url, params=params)
     response.raise_for_status()
     check_for_redirect(response)
 
@@ -64,7 +62,7 @@ def download_img(url: str, dir_name: str) -> str:
     Path(dir_name).mkdir(parents=True, exist_ok=True)
     img_name = get_img_full_name(url)
 
-    response = requests.get(url, allow_redirects=False)
+    response = requests.get(url)
     response.raise_for_status()
     check_for_redirect(response)
 

@@ -16,7 +16,7 @@ def get_library_notes(book_id: int) -> dict:
     book_download_txt_url_params = {'id': book_id}
     book_page_url = urljoin(LIBRARY_URL, f'b{book_id}/')
 
-    response = requests.get(book_page_url, allow_redirects=False)
+    response = requests.get(book_page_url)
     response.raise_for_status()
 
     library_notes = downloader.parse_book_page(response, book_id)
