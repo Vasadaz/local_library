@@ -34,7 +34,7 @@ def get_library_notes(book_id: int) -> dict:
     return library_notes
 
 
-def parse_arg() -> argparse.Namespace:
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description='Скрипт скачивает книги по их id с онлайн-библиотеки https://tululu.org  '
                     '\nКниги сохраняются в директории ./books , а обложки к ним в ./covers '
@@ -59,7 +59,7 @@ def parse_arg() -> argparse.Namespace:
 
 
 if __name__ == '__main__':
-    args = parse_arg()
+    args = parse_args()
     start_id = args.start_id
     end_id = args.end_id + 1
 
