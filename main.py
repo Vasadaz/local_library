@@ -19,7 +19,9 @@ def get_library_notes(book_id: int) -> dict:
     response = requests.get(book_page_url)
     response.raise_for_status()
 
-    library_notes = downloader.parse_book_page(response, book_id)
+    downloader.check_for_redirect(response)
+
+    library_notes = downloader.parse_library_notes(response, book_id)
     book_name = library_notes['book']
     cover_url = urljoin(LIBRARY_URL, library_notes['cover_url'])
     del library_notes['cover_url']

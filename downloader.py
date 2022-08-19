@@ -30,10 +30,7 @@ def download_txt(url: str, dir_name: str, book_name: str, params: dict = None) -
     return book_save_path
 
 
-def parse_book_page(response, book_id: int = None) -> dict:
-
-    check_for_redirect(response)
-
+def parse_library_notes(response, book_id: int = None) -> dict:
     soup = BeautifulSoup(response.text, 'lxml')
     content = soup.find(id='content')
     title_tag = content.find('h1')
