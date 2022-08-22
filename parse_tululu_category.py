@@ -1,3 +1,4 @@
+import json
 import time
 from urllib.parse import urljoin
 
@@ -6,8 +7,6 @@ import requests
 from bs4 import BeautifulSoup
 
 from main import get_library_notes
-
-import pprint
 
 
 def parse_book_tags(response) -> list:
@@ -48,3 +47,7 @@ if __name__ == '__main__':
                 time.sleep(5)
                 continue
 
+    library_json = json.dumps(library_books)
+
+    with open("library_books.json", "w", encoding='utf8') as file:
+        file.write(library_json)

@@ -133,3 +133,4 @@ dmypy.json
 .idea
 books
 covers
+*.json
