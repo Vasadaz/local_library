@@ -79,7 +79,8 @@ if __name__ == '__main__':
 
                 break
             except requests.exceptions.HTTPError as err:
-                print(f'Book №{book_id} Not Found {err.args[0]}\n')
+                book_url = urljoin(err.args[0], f'b{book_id}')
+                print(f'Book №{book_id} Not Found {book_url}\n')
                 break
             except requests.exceptions.ConnectionError as err:
                 print(f'Connection Error: Book №{book_id}\n{err}\n')
