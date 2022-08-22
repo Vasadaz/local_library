@@ -32,12 +32,11 @@ def download_txt(url: str, dir_name: str, book_name: str, params: dict = None) -
 
 def parse_library_notes(response, book_id: int = None) -> dict:
     soup = BeautifulSoup(response.text, 'lxml')
-    content = soup.find(id='content')
-    title_tag = content.find('h1')
+    title_tag = soup.select_one('#content h1')
     title_texts = title_tag.text.split('::')
-    cover_tag = content.find(class_='bookimage').find('img')
-    comment_tags = content.find_all('span', class_='black')
-    genre_tags = content.find('span', class_='d_book').find_all('a')
+    cover_tag = soup.select_one('#content .bookimage img')
+    comment_tags = soup.select('#content .black')
+    genre_tags = soup.select('#content .d_book a[title*="жанр"]')
 
     book_name, author = title_texts
     cover_url = urljoin(response.url, cover_tag['src'])

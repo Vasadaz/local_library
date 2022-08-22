@@ -11,8 +11,9 @@ from main import get_library_notes
 
 def parse_book_tags(response) -> list:
     soup = BeautifulSoup(response.text, 'lxml')
-    content = soup.find(id='content')
-    content_urls = content.find_all('div', class_="bookimage")
+    selectors = '#content .bookimage a[href^="/b"]'
+    content_urls = soup.select(selectors)
+    print(content_urls)
 
     return content_urls
 
@@ -31,7 +32,7 @@ if __name__ == '__main__':
 
     for tag in category_book_tags:
         while True:
-            book_id = tag.find('a')['href'].strip('/b')
+            book_id = tag['href'].strip('/b')
 
             try:
                 book_notes = get_library_notes(book_id)
