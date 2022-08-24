@@ -73,9 +73,9 @@ def parse_book_tags(response) -> list:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description='Скрипт для скачивания 25 книг с каждой страницы.'
-                    '\nКниги сохраняются в директории ./books , а обложки к ним в ./covers .'
-                    '\nПо завершению вся информация по книгам находится в library_books.json'
+        description='Скрипт для скачивания книг из указанной категории онлайн-библиотеки https://tululu.org .'
+                    '\nКниги сохраняются в директорию ./books , а обложки к ним в ./covers .' 
+                    '\nВся информация по книгам сохраняется в JSON файл - library_books.json .'
     )
     parser.add_argument(
         '-c',
