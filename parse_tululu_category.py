@@ -78,6 +78,12 @@ def parse_args() -> argparse.Namespace:
                     '\nПо завершению вся информация по книгам находится в library_books.json'
     )
     parser.add_argument(
+        '-c',
+        '--category_url',
+        help='Ссылка на категорию, по умолчанию  категория "Научная фантастика" https://tululu.org/l55/',
+        default='https://tululu.org/l55/'
+    )
+    parser.add_argument(
         '-s',
         '--start_page',
         help='Начало диапазона страниц, по-умолчанию 1',
@@ -118,9 +124,8 @@ def parse_args() -> argparse.Namespace:
 
 
 if __name__ == '__main__':
-    category_url = 'https://tululu.org/l55/'
-
     args = parse_args()
+    category_url = args.category_url
     start_page = args.start_page
     dest_folder = args.dest_folder
     skip_imgs = args.skip_imgs

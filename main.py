@@ -40,10 +40,9 @@ def get_library_notes(book_id: int) -> dict:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description='Скрипт скачивает книги по их id с онлайн-библиотеки https://tululu.org .'
-                    '\nПри успешной загрузке книги в терминале будет выведена подробная информация о книги,' 
-                    '\nиначе будет сообщено о невозможности загрузить книгу.'
-                    '\nКниги сохраняются в директории ./books , а обложки к ним в ./covers'
+        description='Скрипт для скачивания книг из указанной категориям онлайн-библиотеки https://tululu.org .'
+                    '\nКниги сохраняются в директории ./books , а обложки к ним в ./covers .' 
+                    '\nПо завершению вся информация по книгам находится в library_books.json .'
     )
     parser.add_argument(
         '-s',

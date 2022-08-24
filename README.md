@@ -1,14 +1,14 @@
 # Создание локальная библиотека
 
-Проект local_library позволяет скачивает книги по их id или по категориям 
-из онлайн-библиотеки [tululu](https://tululu.org). 
+Проект local_library позволяет скачивать книги по их id или по категориям 
+из онлайн-библиотеки [tululu.org](https://tululu.org). 
 
 ### Как работает `main.py`
 
-Cкрипт скачивает книги по их id с онлайн-библиотеки [tululu](https://tululu.org).
+Скрипт скачивает книги по их id из онлайн-библиотеки [tululu.org](https://tululu.org).
 При успешной загрузке книги в терминале будет выведена подробная информация о книги, 
 иначе будет сообщено о невозможности загрузить книгу.
-Книги сохраняются в директории ./books , а обложки к ним в ./covers
+Книги сохраняются в директории `./books`, а обложки к ним в `./covers`.
 
 
 ###### Аргументы `main.py`:
@@ -50,15 +50,18 @@ local_library/
 
 ### Как работает `parse_tululu_category.py`
 
-Скрипт для скачивания 25 книг с каждой страницы. Книги сохраняются в директории ./books , а обложки к ним в
-./covers . По завершению вся информация по книгам находится
-в library_books.json
+Скрипт для скачивания книг из указанной категориям онлайн-библиотеки [tululu.org](https://tululu.org).
+Книги сохраняются в директории `./books`, а обложки к ним в `./covers`. 
+По завершению вся информация по книгам находится в library_books.json
 
 
 ###### Аргументы `parse_tululu_category.py`:
 ```
 -h, --help            
     Вывод информации о скрипте
+    
+-c CATEGORY_URL, --category_url CATEGORY_URL
+    Ссылка на категорию, по умолчанию категория "Научная фантастика" https://tululu.org/l55/
  
 -s START_PAGE, --start_page START_PAGE
     Начало диапазона страниц, по-умолчанию 1
@@ -84,19 +87,23 @@ local_library/
 
 ###### Пример запуска скрипта `parse_tululu_category.py`:
 ```shell
-python parse_tululu_category.py -s 1 -e 2 --json_path result --skip_txt --dest_folder fantastic
+python parse_tululu_category.py -c https://tululu.org/computer/ -s 1 -e 2 --json_path result --skip_img --dest_folder fantastic
 
 # Ответ скрипта:
 Parsed 25 books on page 1
 Parsed 25 books on page 2
 
+Book №46173 Not Found https://tululu.org/b46173
+...
+Book №46220 Not Found https://tululu.org/b46220
+
 # Результат запуска:
 local_library/
 └── fantastic/
-    ├── covers/
-    │   ├── 10768.jpg
+    ├── books/
+    │   ├── 46168. 1.Внутреннее устройство Windows (гл. 1-4).txt
     │   ├── ...
-    │   └── nopic.gif
+    │   └── 46236. Все под контролем Кто и как следит за тобой.txt
     └── result/
         └── library_books.json
 ```
