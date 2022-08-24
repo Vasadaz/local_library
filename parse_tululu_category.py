@@ -16,6 +16,7 @@ import downloader
 IMAGE_DIR_NAME = 'covers'
 LIBRARY_DIR_NAME = 'books'
 LIBRARY_URL = 'https://tululu.org/'
+JSON_FILE_NAME = 'library_books.json'
 
 def get_last_page_num(response) -> int:
     soup = BeautifulSoup(response.text, 'lxml')
@@ -78,7 +79,6 @@ def parse_args() -> argparse.Namespace:
         '-s',
         '--start_page',
         help='Начало диапазона страниц, по-умолчанию 1',
-        default=1,
         type=int,
     )
     parser.add_argument(
@@ -106,7 +106,6 @@ def parse_args() -> argparse.Namespace:
         '--json_path',
         help='Указание пути к JSON файлу с результатами.',
         type=str,
-        default='./library_books.json'
     )
     parsed_args = parser.parse_args()
 
@@ -134,6 +133,13 @@ if __name__ == '__main__':
         Path(dest_folder).mkdir(parents=True, exist_ok=True)
         IMAGE_DIR_NAME = os.path.join(dest_folder, IMAGE_DIR_NAME)
         LIBRARY_DIR_NAME = os.path.join(dest_folder, LIBRARY_DIR_NAME)
+        json_path = os.path.join(dest_folder, json_path)
+
+    if json_path:
+        Path(json_path).mkdir(parents=True, exist_ok=True)
+        json_full_file_name = os.path.join(json_path, JSON_FILE_NAME)
+    else:
+        json_full_file_name = JSON_FILE_NAME
 
     category_book_tags = []
     library_books = {}
@@ -146,6 +152,9 @@ if __name__ == '__main__':
 
         book_tags = parse_book_tags(response)
         category_book_tags.extend(book_tags)
+
+        print(f'Parsed {len(book_tags)} books on page {page_num}')
+    print()
 
     for tag in category_book_tags:
         while True:
@@ -166,5 +175,5 @@ if __name__ == '__main__':
 
     library_json = json.dumps(library_books)
 
-    with open(json_path, 'w+', encoding='utf8') as file:
+    with open(json_full_file_name, 'w+', encoding='utf8') as file:
         file.write(library_json)
