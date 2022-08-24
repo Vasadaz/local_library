@@ -18,6 +18,7 @@ LIBRARY_DIR_NAME = 'books'
 LIBRARY_URL = 'https://tululu.org/'
 JSON_FILE_NAME = 'library_books.json'
 
+
 def get_last_page_num(response) -> int:
     soup = BeautifulSoup(response.text, 'lxml')
     selectors = '#content a.npage'
@@ -86,7 +87,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         '-e',
         '--end_page',
-        help='Конец диапазона страниц, по-умолчанию 4',
+        help='Конец диапазона страниц, по-умолчанию последняя страница',
         type=int,
     )
     parser.add_argument(
@@ -106,7 +107,9 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         '--json_path',
-        help='Указание пути к JSON файлу с результатами.',
+        help='Указание пути к JSON файлу с информацией по книгам.'
+             '\nЕсли указан --dest_folder, то итоговый путь JSON файла:'
+             '\nDEST_FOLDER/JSON_PATH/library_books.json',
         type=str,
     )
     parsed_args = parser.parse_args()
