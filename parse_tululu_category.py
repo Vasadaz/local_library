@@ -81,6 +81,7 @@ def parse_args() -> argparse.Namespace:
         '--start_page',
         help='Начало диапазона страниц, по-умолчанию 1',
         type=int,
+        default=1
     )
     parser.add_argument(
         '-e',
@@ -96,12 +97,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         '--skip_imgs',
         help='Скрипт не будет скачивать картинки',
-        action='store_true',
+        action='store_false',
     )
     parser.add_argument(
         '--skip_txt',
         help='Скрипт не будет скачивать книги',
-        action='store_true',
+        action='store_false',
     )
     parser.add_argument(
         '--json_path',
@@ -162,7 +163,10 @@ if __name__ == '__main__':
             book_id = tag['href'].strip('/b')
 
             try:
-                book_notes = get_book_resources(book_id)
+                book_notes = get_book_resources(
+                    book_id,
+                    get_cover=skip_imgs,
+                    get_txt=skip_txt)
                 library_books[book_id] = book_notes
                 break
             except requests.exceptions.HTTPError as err:
