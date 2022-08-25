@@ -19,16 +19,14 @@ LIBRARY_URL = 'https://tululu.org/'
 JSON_FILE_NAME = 'library_books.json'
 
 
-def get_last_page_num(page_url) -> int:
-    response = requests.get(page_url)
-    response.raise_for_status()
+def get_book_notes(book_id: int):
+    book_notes = get_book_resources(
+        book_id,
+        get_cover=skip_imgs,
+        get_txt=skip_txt
+    )
 
-    soup = BeautifulSoup(response.text, 'lxml')
-    selectors = '#content a.npage'
-    last_page_num_tag = soup.select(selectors)[-1]
-    last_page_num = int(last_page_num_tag.text)
-
-    return last_page_num
+    return book_notes
 
 
 def get_book_resources(book_id: int,
@@ -66,12 +64,27 @@ def get_book_resources(book_id: int,
     return library_notes
 
 
-def parse_book_tags(response) -> list:
-    soup = BeautifulSoup(response.text, 'lxml')
-    selectors = '#content .bookimage a[href^="/b"]'
-    content_urls = soup.select(selectors)
+def get_book_tags(page_num: int) -> list:
+    page_num_url = urljoin(category_url, str(page_num))
+    response = requests.get(page_num_url)
+    response.raise_for_status()
+    book_tags = parse_book_tags(response)
 
-    return content_urls
+    print(f'Parsed {len(book_tags)} books on page {page_num}')
+
+    return book_tags
+
+
+def get_last_page_num(page_url) -> int:
+    response = requests.get(page_url)
+    response.raise_for_status()
+
+    soup = BeautifulSoup(response.text, 'lxml')
+    selectors = '#content a.npage'
+    last_page_num_tag = soup.select(selectors)[-1]
+    last_page_num = int(last_page_num_tag.text)
+
+    return last_page_num
 
 
 def parse_args() -> argparse.Namespace:
@@ -123,25 +136,14 @@ def parse_args() -> argparse.Namespace:
 
     return parsed_args
 
-def get_book_tags(page_num: int) -> list:
-    page_num_url = urljoin(category_url, str(page_num))
-    response = requests.get(page_num_url)
-    response.raise_for_status()
-    book_tags = parse_book_tags(response)
 
-    print(f'Parsed {len(book_tags)} books on page {page_num}')
+def parse_book_tags(response) -> list:
+    soup = BeautifulSoup(response.text, 'lxml')
+    selectors = '#content .bookimage a[href^="/b"]'
+    content_urls = soup.select(selectors)
 
-    return book_tags
+    return content_urls
 
-
-def get_book_notes(book_id: int):
-    book_notes = get_book_resources(
-        book_id,
-        get_cover=skip_imgs,
-        get_txt=skip_txt
-    )
-
-    return book_notes
 
 def prevent_network_errors(function, arg):
     while True:

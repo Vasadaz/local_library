@@ -13,6 +13,22 @@ def check_for_redirect(response):
         raise requests.HTTPError
 
 
+def download_img(url: str, dir_name: str) -> str:
+    Path(dir_name).mkdir(parents=True, exist_ok=True)
+    img_name = get_img_full_name(url)
+
+    response = requests.get(url)
+    response.raise_for_status()
+    check_for_redirect(response)
+
+    file_save_path = os.path.join(dir_name, img_name)
+
+    with open(file_save_path, 'wb') as file:
+        file.write(response.content)
+
+    return file_save_path
+
+
 def download_txt(url: str, dir_name: str, book_name: str, params: dict = None) -> str:
     Path(dir_name).mkdir(parents=True, exist_ok=True)
 
@@ -28,6 +44,15 @@ def download_txt(url: str, dir_name: str, book_name: str, params: dict = None) -
         file.write(response.content)
 
     return book_save_path
+
+
+def get_img_full_name(url: str) -> str:
+    img_url = urlsplit(url).path
+    unquote_img_url = unquote(img_url)
+    img_file = os.path.split(unquote_img_url)[-1]
+    img_full_name = "".join(os.path.splitext(img_file))
+
+    return img_full_name
 
 
 def parse_library_notes(response, book_id: int = None) -> dict:
@@ -52,28 +77,3 @@ def parse_library_notes(response, book_id: int = None) -> dict:
     }
 
     return page_resources
-
-
-def download_img(url: str, dir_name: str) -> str:
-    Path(dir_name).mkdir(parents=True, exist_ok=True)
-    img_name = get_img_full_name(url)
-
-    response = requests.get(url)
-    response.raise_for_status()
-    check_for_redirect(response)
-
-    file_save_path = os.path.join(dir_name, img_name)
-
-    with open(file_save_path, 'wb') as file:
-        file.write(response.content)
-
-    return file_save_path
-
-
-def get_img_full_name(url: str) -> str:
-    img_url = urlsplit(url).path
-    unquote_img_url = unquote(img_url)
-    img_file = os.path.split(unquote_img_url)[-1]
-    img_full_name = "".join(os.path.splitext(img_file))
-
-    return img_full_name
