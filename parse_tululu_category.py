@@ -19,7 +19,10 @@ LIBRARY_URL = 'https://tululu.org/'
 JSON_FILE_NAME = 'library_books.json'
 
 
-def get_last_page_num(response) -> int:
+def get_last_page_num(page_url) -> int:
+    response = requests.get(page_url)
+    response.raise_for_status()
+
     soup = BeautifulSoup(response.text, 'lxml')
     selectors = '#content a.npage'
     last_page_num_tag = soup.select(selectors)[-1]
@@ -120,6 +123,39 @@ def parse_args() -> argparse.Namespace:
 
     return parsed_args
 
+def get_book_tags(page_num: int) -> list:
+    page_num_url = urljoin(category_url, str(page_num))
+    response = requests.get(page_num_url)
+    response.raise_for_status()
+    book_tags = parse_book_tags(response)
+
+    print(f'Parsed {len(book_tags)} books on page {page_num}')
+
+    return book_tags
+
+
+def get_book_notes(book_id: int):
+    book_notes = get_book_resources(
+        book_id,
+        get_cover=skip_imgs,
+        get_txt=skip_txt
+    )
+
+    return book_notes
+
+def prevent_network_errors(function, arg):
+    while True:
+        try:
+            function_return = function(arg)
+            return function_return
+        except requests.exceptions.HTTPError:
+            print(f'Resource Not Found: function {function.__name__}({arg})')
+            return
+        except requests.exceptions.ConnectionError:
+            print(f'Connection Error: function {function.__name__}({arg})')
+            time.sleep(5)
+            continue
+
 
 if __name__ == '__main__':
     args = parse_args()
@@ -133,9 +169,7 @@ if __name__ == '__main__':
     if args.end_page:
         end_page = args.end_page + 1
     else:
-        response = requests.get(category_url)
-        response.raise_for_status()
-        end_page = get_last_page_num(response) + 1
+        end_page = prevent_network_errors(get_last_page_num, category_url) + 1
 
     if dest_folder:
         Path(dest_folder).mkdir(parents=True, exist_ok=True)
@@ -153,36 +187,13 @@ if __name__ == '__main__':
     library_books = {}
 
     for page_num in range(start_page, end_page):
-        page_num_url = urljoin(category_url, str(page_num))
-
-        response = requests.get(page_num_url)
-        response.raise_for_status()
-
-        book_tags = parse_book_tags(response)
+        book_tags = prevent_network_errors(get_book_tags, page_num)
         category_book_tags.extend(book_tags)
 
-        print(f'Parsed {len(book_tags)} books on page {page_num}')
-    print()
-
     for tag in category_book_tags:
-        while True:
-            book_id = tag['href'].strip('/b')
-
-            try:
-                book_notes = get_book_resources(
-                    book_id,
-                    get_cover=skip_imgs,
-                    get_txt=skip_txt)
-                library_books[book_id] = book_notes
-                break
-            except requests.exceptions.HTTPError as err:
-                book_url = urljoin(err.args[0], f'b{book_id}')
-                print(f'Book №{book_id} Not Found {book_url}\n')
-                break
-            except requests.exceptions.ConnectionError as err:
-                print(f'Connection Error: Book №{book_id}\n{err}\n')
-                time.sleep(5)
-                continue
+        book_id = tag['href'].strip('/b')
+        book_notes = prevent_network_errors(get_book_notes, book_id)
+        library_books[book_id] = book_notes
 
     library_json = json.dumps(library_books)
 

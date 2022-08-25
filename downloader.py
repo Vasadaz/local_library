@@ -10,7 +10,7 @@ from pathvalidate import sanitize_filename
 
 def check_for_redirect(response):
     if response.history:
-        raise requests.HTTPError(response.url, response)
+        raise requests.HTTPError
 
 
 def download_txt(url: str, dir_name: str, book_name: str, params: dict = None) -> str:
