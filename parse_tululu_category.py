@@ -145,16 +145,16 @@ def parse_book_tags(response) -> list:
     return content_urls
 
 
-def prevent_network_errors(function, arg):
+def prevent_network_errors(function, **kwargs):
     while True:
         try:
-            function_return = function(arg)
+            function_return = function(**kwargs)
             return function_return
         except requests.exceptions.HTTPError:
-            print(f'Resource Not Found: function {function.__name__}({arg})')
+            print(f'Resource Not Found: function {function.__name__}({kwargs})')
             return
         except requests.exceptions.ConnectionError:
-            print(f'Connection Error: function {function.__name__}({arg})')
+            print(f'Connection Error: function {function.__name__}({kwargs})')
             time.sleep(5)
             continue
 
@@ -171,7 +171,7 @@ if __name__ == '__main__':
     if args.end_page:
         end_page = args.end_page + 1
     else:
-        end_page = prevent_network_errors(get_last_page_num, category_url) + 1
+        end_page = prevent_network_errors(get_last_page_num, page_url=category_url) + 1
 
     if dest_folder:
         Path(dest_folder).mkdir(parents=True, exist_ok=True)
@@ -189,12 +189,12 @@ if __name__ == '__main__':
     library_books = {}
 
     for page_num in range(start_page, end_page):
-        book_tags = prevent_network_errors(get_book_tags, page_num)
+        book_tags = prevent_network_errors(get_book_tags, page_num=page_num)
         category_book_tags.extend(book_tags)
 
     for tag in category_book_tags:
         book_id = tag['href'].strip('/b')
-        book_notes = prevent_network_errors(get_book_notes, book_id)
+        book_notes = prevent_network_errors(get_book_notes, book_id=book_id)
         library_books[book_id] = book_notes
 
     library_json = json.dumps(library_books)
