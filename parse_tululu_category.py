@@ -99,7 +99,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         '--dest_folder',
         help='Указание пути к каталогу с результатами парсинга: картинкам, книгам, JSON.',
-        type=str,
     )
     parser.add_argument(
         '--skip_imgs',
@@ -116,7 +115,6 @@ def parse_args() -> argparse.Namespace:
         help='Указание пути к JSON файлу с информацией по книгам.'
              '\nЕсли указан --dest_folder, то итоговый путь JSON файла:'
              '\nDEST_FOLDER/JSON_PATH/library_books.json',
-        type=str,
     )
     parsed_args = parser.parse_args()
 
