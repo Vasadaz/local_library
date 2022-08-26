@@ -19,16 +19,6 @@ LIBRARY_URL = 'https://tululu.org/'
 JSON_FILE_NAME = 'library_books.json'
 
 
-def get_book_notes(book_id: int):
-    book_notes = get_book_resources(
-        book_id,
-        get_cover=skip_imgs,
-        get_txt=skip_txt
-    )
-
-    return book_notes
-
-
 def get_book_resources(book_id: int,
                        get_cover: bool = True,
                        get_txt: bool = True,
@@ -69,8 +59,6 @@ def get_book_tags(page_num: int) -> list:
     response = requests.get(page_num_url)
     response.raise_for_status()
     book_tags = parse_book_tags(response)
-
-    print(f'Parsed {len(book_tags)} books on page {page_num}')
 
     return book_tags
 
@@ -194,7 +182,12 @@ if __name__ == '__main__':
 
     for tag in category_book_tags:
         book_id = tag['href'].strip('/b')
-        book_notes = prevent_network_errors(get_book_notes, book_id=book_id)
+        book_notes = prevent_network_errors(
+            get_book_resources,
+            book_id=book_id,
+            get_cover=skip_imgs,
+            get_txt=skip_txt,
+        )
         library_books[book_id] = book_notes
 
     library_json = json.dumps(library_books)
