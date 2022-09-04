@@ -188,7 +188,8 @@ if __name__ == '__main__':
             get_cover=skip_imgs,
             get_txt=skip_txt,
         )
-        library_books[book_id] = book_notes
+        if book_notes:
+            library_books[book_id] = book_notes
 
     library_json = json.dumps(library_books)
 
