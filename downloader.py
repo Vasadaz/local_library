@@ -1,5 +1,4 @@
-import os.path
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from urllib.parse import urljoin, unquote, urlsplit
 
 import requests
@@ -15,18 +14,18 @@ def check_for_redirect(response):
 
 def download_img(url: str, dir_name: str) -> str:
     Path(dir_name).mkdir(parents=True, exist_ok=True)
-    img_name = get_img_full_name(url)
+    img_name = PurePosixPath(url).name
 
     response = requests.get(url)
     response.raise_for_status()
     check_for_redirect(response)
 
-    file_save_path = os.path.join(dir_name, img_name)
+    file_save_path = PurePosixPath(dir_name) / img_name
 
     with open(file_save_path, 'wb') as file:
         file.write(response.content)
 
-    return file_save_path
+    return file_save_path.as_posix()
 
 
 def download_txt(url: str, dir_name: str, book_name: str, params: dict = None) -> str:
@@ -38,21 +37,12 @@ def download_txt(url: str, dir_name: str, book_name: str, params: dict = None) -
 
     file_type = 'txt'
     book_full_name = '.'.join([book_name, file_type])
-    book_save_path = os.path.join(dir_name, book_full_name)
+    book_save_path = PurePosixPath(dir_name) / book_full_name
 
     with open(book_save_path, 'wb+') as file:
         file.write(response.content)
 
-    return book_save_path
-
-
-def get_img_full_name(url: str) -> str:
-    img_url = urlsplit(url).path
-    unquote_img_url = unquote(img_url)
-    img_file = os.path.split(unquote_img_url)[-1]
-    img_full_name = "".join(os.path.splitext(img_file))
-
-    return img_full_name
+    return book_save_path.as_posix()
 
 
 def parse_library_notes(response, book_id: int = None) -> dict:
