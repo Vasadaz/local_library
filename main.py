@@ -22,7 +22,7 @@ def get_library_notes(book_id: int) -> dict:
     downloader.check_for_redirect(response)
 
     library_notes = downloader.parse_library_notes(response, book_id)
-    book_name = library_notes['book']
+    book_name = library_notes['name']
     library_notes['book_path'] = downloader.download_txt(
         book_download_txt_url,
         LIBRARY_DIR_NAME,

@@ -35,7 +35,7 @@ def get_book_resources(book_id: int,
     downloader.check_for_redirect(response)
 
     library_notes = downloader.parse_library_notes(response, book_id)
-    book_name = library_notes['book']
+    book_name = library_notes['name']
 
     if get_txt:
         library_notes['book_path'] = downloader.download_txt(
