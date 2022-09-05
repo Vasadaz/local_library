@@ -1,16 +1,10 @@
 import json
 
-from http.server import HTTPServer, SimpleHTTPRequestHandler
-
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+from livereload import Server
 
 
-if __name__ == '__main__':
-    env = Environment(
-        loader=FileSystemLoader('templates'),
-        autoescape=select_autoescape(['html', 'xml'])
-    )
-
+def reload_template():
     with open('library_books.json', 'r', encoding="utf8") as file:
         books = json.load(file)
 
@@ -20,5 +14,14 @@ if __name__ == '__main__':
     with open('index.html', 'w', encoding="utf8") as file:
         file.write(rendered_page)
 
-    server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
-    server.serve_forever()
+
+if __name__ == '__main__':
+    env = Environment(
+        loader=FileSystemLoader('templates'),
+        autoescape=select_autoescape(['html', 'xml'])
+    )
+
+    reload_template()
+    server = Server()
+    server.watch('library_books.json', reload_template)
+    server.serve(root='.')
