@@ -11,22 +11,46 @@
     <title>Локальная библиотека</title>
   </head>
   <body>
-    {% for book in books %}
-      <div class="card mb-3" style="max-width: 540px;">
-        <div class="row no-gutters">
-          <div class="col-md-4">
-            <img src="{{book.cover_path}}" class="card-img" alt="{{book.book}} {{book.author}}">
-          </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title">{{book.name}}</h5>
-              <p class="card-text">{{book.author}}</p>
-              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+    <div class="container">
+      {% for books_cols in books_rows %}
+        <div class="row">
+          <div class="col-6">
+            <div class="card mb-3" style="max-width: 540px;">
+              <div class="row no-gutters">
+                <div class="col-md-4">
+                  <img src="{{books_cols[0].cover_path}}" class="card-img" alt="{{books_cols[0].book}} {{books_cols[0].author}}">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">{{books_cols[0].name}}</h5>
+                    <p class="card-text">{{books_cols[0].author}}</p>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-    {% endfor %}
+          {% if books_cols|length == 2 %}
+            <div class="col-6">
+              <div class="card mb-3" style="max-width: 540px;">
+                <div class="row no-gutters">
+                  <div class="col-md-4">
+                    <img src="{{books_cols[1].cover_path}}" class="card-img" alt="{{books_cols[1].book}} {{books_cols[1].author}}">
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <h5 class="card-title">{{books_cols[1].name}}</h5>
+                      <p class="card-text">{{books_cols[1].author}}</p>
+                      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
