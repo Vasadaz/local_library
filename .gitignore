@@ -130,8 +130,9 @@ dmypy.json
 
 
 # @Vasadaz ignore
-.idea
-books
-covers
+.idea/
+books/
+covers/
+pages/
 *.json
 index.html
