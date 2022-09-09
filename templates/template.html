@@ -12,19 +12,61 @@
   </head>
   <body>
     <div class="container">
+      <div class="pt-3">
+        <nav aria-label="Навигация по страницам">
+          <ul class="pagination">
+            {% if page_num == 1 %}
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Предыдущая</a>
+              </li>
+            {% else %}
+              <li class="page-item">
+                <a class="page-link" href="index{{page_num - 1}}.html">Предыдущая</a>
+              </li>
+            {% endif %}
+
+            {% for num in range(1,page_last_num + 1) %}
+              {% if num == page_num %}
+                <li class="page-item active" aria-current="page">
+                  <span class="page-link">
+                    {{num}}
+                    <span class="sr-only">(current)</span>
+                  </span>
+                </li>
+              {% else %}
+                <li class="page-item"><a class="page-link" href="index{{num}}.html">
+                  {{num}}
+                </a></li>
+              {% endif %}
+            {% endfor %}
+
+            {% if page_num == page_last_num %}
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Следующая</a>
+              </li>
+            {% else %}
+              <li class="page-item">
+                <a class="page-link" href="index{{page_num + 1}}.html">Следующая</a>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+      </div>
+
+
       {% for books_cols in books_rows %}
         <div class="row">
           <div class="col-6">
             <div class="card mb-3" style="max-width: 540px;">
               <div class="row no-gutters">
                 <div class="col-md-4">
-                  <img src="{{books_cols[0].cover_path}}" class="card-img" alt="{{books_cols[0].book}} {{books_cols[0].author}}">
+                  <img src="../{{books_cols[0].cover_path}}" class="card-img" alt="{{books_cols[0].book}} {{books_cols[0].author}}">
                 </div>
                 <div class="col-md-8">
                   <div class="card-body">
                     <h5 class="card-title">{{books_cols[0].name}}</h5>
                     <p class="card-text">{{books_cols[0].author}}</p>
-                    <p class="card-text"><a href="{{books_cols[0].book_path }}" target="_blank" >Читать</a></p>
+                    <p class="card-text"><a href="../{{books_cols[0].book_path }}" target="_blank" >Читать</a></p>
                   </div>
                 </div>
               </div>
@@ -35,13 +77,13 @@
               <div class="card mb-3" style="max-width: 540px;">
                 <div class="row no-gutters">
                   <div class="col-md-4">
-                    <img src="{{books_cols[1].cover_path}}" class="card-img" alt="{{books_cols[1].book}} {{books_cols[1].author}}">
+                    <img src="../{{books_cols[1].cover_path}}" class="card-img" alt="{{books_cols[1].book}} {{books_cols[1].author}}">
                   </div>
                   <div class="col-md-8">
                     <div class="card-body">
                       <h5 class="card-title">{{books_cols[1].name}}</h5>
                       <p class="card-text">{{books_cols[1].author}}</p>
-                      <p class="card-text"><a href="{{books_cols[1].book_path }}" target="_blank" >Читать</a></p>
+                      <p class="card-text"><a href="../{{books_cols[1].book_path }}" target="_blank" >Читать</a></p>
                     </div>
                   </div>
                 </div>

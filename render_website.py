@@ -15,15 +15,17 @@ def reload_template():
     Path(pages_dir_name).mkdir(parents=True, exist_ok=True)
 
     books_pages = list(chunked(books.values(), 10))
-    print(len(books))
 
-    for num, page_books in enumerate(books_pages):
-        print(len(page_books))
+    for page_num, page_books in enumerate(books_pages, 1):
         books_rows = list(chunked(page_books, 2))
         template = env.get_template('template.html')
-        rendered_page = template.render(books_rows=books_rows)
+        rendered_page = template.render(
+            books_rows=books_rows,
+            page_last_num=len(books_pages),
+            page_num=page_num,
+        )
 
-        with open(f'{pages_dir_name}/index{num}.html', 'w', encoding="utf8") as file:
+        with open(f'{pages_dir_name}/index{page_num}.html', 'w', encoding="utf8") as file:
             file.write(rendered_page)
 
 
