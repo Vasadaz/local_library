@@ -1,5 +1,5 @@
 from pathlib import Path, PurePosixPath
-from urllib.parse import urljoin, unquote, urlsplit
+from urllib.parse import urljoin
 
 import requests
 
