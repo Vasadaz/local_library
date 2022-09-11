@@ -1,7 +1,9 @@
 # Создание локальная библиотека
 
 Проект local_library позволяет скачивать книги по их id или по категориям 
-из онлайн-библиотеки [tululu.org](https://tululu.org). 
+из онлайн-библиотеки [tululu.org](https://tululu.org), а также создаёт 
+локальный сайт библиотеки - [пример сайта](https://vasadaz.github.io/local_library/).
+
 
 ### Как работает `main.py`
 
@@ -86,6 +88,7 @@ local_library/
 
 
 ###### Пример запуска скрипта `parse_tululu_category.py`:
+
 ```shell
 python parse_tululu_category.py -c https://tululu.org/computer/ -s 1 -e 2 --json_path result --skip_img --dest_folder fantastic
 
@@ -109,6 +112,25 @@ local_library/
 ```
 
 
+### Как работает `render_website.py`
+
+На основании файла `library_books.json` скрипт создаёт локальный сайт библиотеки, 
+который доступен в браузере по адресу [127.0.0.1:5500](http://127.0.0.1:5500) -
+[пример сайта](https://vasadaz.github.io/local_library/).
+
+
+###### Пример запуска скрипта `render_website.py`:
+
+```shell
+python render_website.py
+
+# Ответ скрипта:
+[I 220911 22:11:27 server:335] Serving on http://127.0.0.1:5500
+[I 220911 22:11:27 handlers:62] Start watching changes
+[I 220911 22:11:27 handlers:64] Start detecting changes
+```
+
+
 ### Как установить
 
 Python3 должен быть уже установлен. 
@@ -121,6 +143,7 @@ pip install -r requirements.txt
 ```shell
 pip3 install -r requirements.txt
 ```
+
 
 ### Цель проекта
 
