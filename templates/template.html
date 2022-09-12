@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="../static/bootstrap.min.css">
 
-    <!-- Fawicin -->
+    <!-- Favicon -->
     <link type="image/x-icon" href="../static/favicon.ico" rel="shortcut icon">
 
     <title>Локальная библиотека</title>
@@ -20,7 +20,7 @@
           <ul class="pagination">
             {% if page_num == 1 %}
               <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Предыдущая</a>
+                <a class="page-link" tabindex="-1" aria-disabled="true">Предыдущая</a>
               </li>
             {% else %}
               <li class="page-item">
@@ -45,7 +45,7 @@
 
             {% if page_num == page_last_num %}
               <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Следующая</a>
+                <a class="page-link" tabindex="-1" aria-disabled="true">Следующая</a>
               </li>
             {% else %}
               <li class="page-item">
@@ -63,7 +63,7 @@
             <div class="card mb-3" style="max-width: 540px;">
               <div class="row no-gutters">
                 <div class="col-md-4">
-                  <img src="../{{books_cols[0].cover_path}}" class="card-img" alt="{{books_cols[0].book}} {{books_cols[0].author}}">
+                  <img src="../books_cols[0].cover_path}}" class="card-img" alt="{{books_cols[0].name}} - {{books_cols[0].author}}">
                 </div>
                 <div class="col-md-8">
                   <div class="card-body">
@@ -74,7 +74,7 @@
                       <span class="badge badge-secondary">{{genre}}</span>
                     {% endfor %}
 
-                    <p class="card-text"><a href="../{{books_cols[0].book_path }}" target="_blank" >Читать</a></p>
+                    <p class="card-text"><a href="../{{books_cols[0].book_path | urlencode}}" target="_blank" >Читать</a></p>
                   </div>
                 </div>
               </div>
@@ -85,7 +85,7 @@
               <div class="card mb-3" style="max-width: 540px;">
                 <div class="row no-gutters">
                   <div class="col-md-4">
-                    <img src="../{{books_cols[1].cover_path}}" class="card-img" alt="{{books_cols[1].book}} {{books_cols[1].author}}">
+                    <img src="../{{books_cols[1].cover_path}}" class="card-img" alt="{{books_cols[1].name}} - {{books_cols[1].author}}">
                   </div>
                   <div class="col-md-8">
                     <div class="card-body">
