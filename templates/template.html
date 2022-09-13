@@ -56,56 +56,42 @@
         </nav>
       </div>
 
-
       {% for books_cols in books_rows %}
-        <div class="row">
-          <div class="col-6">
-            <div class="card mb-3" style="max-width: 540px;">
-              <div class="row no-gutters">
-                <div class="col-md-4">
-                  <img src="../books_cols[0].cover_path}}" class="card-img" alt="{{books_cols[0].name}} - {{books_cols[0].author}}">
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">{{books_cols[0].name}}</h5>
-                    <p class="card-text">{{books_cols[0].author}}</p>
+      <div class="row">
 
-                    {% for genre in books_cols[0].genres %}
-                      <span class="badge badge-secondary">{{genre}}</span>
-                    {% endfor %}
+        {% for book in books_cols %}
+        <div class="col-6">
+          <div class="card mb-3" style="max-width: 540px;">
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <img src="../{{book.cover_path | urlencode}}" class="card-img" alt="{{book.name}} - {{book.author}}">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">{{book.name}}</h5>
+                  <p class="card-text">{{book.author}}</p>
 
-                    <p class="card-text"><a href="../{{books_cols[0].book_path | urlencode}}" target="_blank" >Читать</a></p>
-                  </div>
+                  {% for genre in book.genres %}
+                  <span class="badge badge-secondary">{{genre}}</span>
+                  {% endfor %}
+
+                  <p class="card-text">
+                      <a href="{{book.book_path | convert | urlencode}}" target="_blank" type="text/plain">Читать</a>
+                      |
+                      <a href="../{{book.book_path | urlencode}}" target="_blank" type="text/plain" download="">Скачать txt</a>
+                    </p>
                 </div>
               </div>
             </div>
           </div>
-          {% if books_cols|length == 2 %}
-            <div class="col-6">
-              <div class="card mb-3" style="max-width: 540px;">
-                <div class="row no-gutters">
-                  <div class="col-md-4">
-                    <img src="../{{books_cols[1].cover_path}}" class="card-img" alt="{{books_cols[1].name}} - {{books_cols[1].author}}">
-                  </div>
-                  <div class="col-md-8">
-                    <div class="card-body">
-                      <h5 class="card-title">{{books_cols[1].name}}</h5>
-                      <p class="card-text">{{books_cols[1].author}}</p>
+        </div>
+        {% endfor %}
 
-                      {% for genre in books_cols[1].genres %}
-                        <span class="badge badge-secondary">{{genre}}</span>
-                      {% endfor %}
-
-                      <p class="card-text"><a href="../{{books_cols[1].book_path }}" target="_blank" >Читать</a></p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        {% endif %}
+      </div>
       {% endfor %}
+
     </div>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="../static/jquery-3.3.1.slim.min.js"></script>
