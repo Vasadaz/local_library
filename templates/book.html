@@ -1,16 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <title>{{title}}</title>
-</head>
-<body>
-  <div style="background-color: fae7b5;">
-    <div style="max-width: 777; margin: auto;">
-      <pre style="font-size:20px; white-space: pre-wrap;">
+    <style>
+      body{
+       background-color: #FAE7B5;
+      }
+      pre {
+       font-size:20px;
+       white-space: pre-wrap;
+      }
+      .book_size {
+       width: 700px;
+       margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <div class="book_size">
+        <pre>
 {{book}}
-      </pre>
+        </pre>
+      </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>
