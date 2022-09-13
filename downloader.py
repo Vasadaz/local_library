@@ -60,7 +60,7 @@ def parse_library_notes(response, book_id: int = None) -> dict:
 
     page_resources = {
         'author': author.strip(),
-        'name': sanitize_filename(f'{book_id}. {book_name.strip()}'),
+        'name': sanitize_filename(f'{book_id} {book_name.strip()}'),
         'genres': genres,
         'comments': comments,
         'cover_url': cover_url,
