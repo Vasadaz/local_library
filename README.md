@@ -92,13 +92,10 @@ local_library/
 ```shell
 python parse_tululu_category.py -c https://tululu.org/computer/ -s 1 -e 2 --json_path result --skip_img --dest_folder fantastic
 
-# Ответ скрипта:
-Parsed 25 books on page 1
-Parsed 25 books on page 2
-
-Book №46173 Not Found https://tululu.org/b46173
+# Ответ от скрипта в случае неудачного отсутствия файла txt на tululu.org:
+Resource Not Found: function get_book_resources({'book_id': '46173', 'get_cover': False, 'get_txt': True})
 ...
-Book №46220 Not Found https://tululu.org/b46220
+Resource Not Found: function get_book_resources({'book_id': '46220', 'get_cover': False, 'get_txt': True})
 
 # Результат запуска:
 local_library/
