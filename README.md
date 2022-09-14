@@ -92,7 +92,7 @@ local_library/
 ```shell
 python parse_tululu_category.py -c https://tululu.org/computer/ -s 1 -e 2 --json_path result --skip_img --dest_folder fantastic
 
-# Ответ от скрипта в случае неудачного отсутствия файла txt на tululu.org:
+# Ответ от скрипта в случае отсутствия файла txt на tululu.org:
 Resource Not Found: function get_book_resources({'book_id': '46173', 'get_cover': False, 'get_txt': True})
 ...
 Resource Not Found: function get_book_resources({'book_id': '46220', 'get_cover': False, 'get_txt': True})
